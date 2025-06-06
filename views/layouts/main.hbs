@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../../css/main.css">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-
+{{#if game.cover}}
+    <meta property="og:image" content="{{game.cover}}">
+    <meta name="twitter:image" content="{{game.cover}}" />
+{{/if}}
 {{#if game.name}}
     <title>{{game.name}} — Torrent Oyun Yüklə</title>
 <meta name="keywords" content="{{game.name}}, torrent oyun, torrent oyun yüklə, {{game.name}} torrent, {{game.name}} yüklə, {{game.name}} oyun, {{game.name}} oyun yüklə, {{game.name}} torrent yüklə{{#each game.category}}, {{this}}{{/each}}">

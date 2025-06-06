@@ -2,6 +2,23 @@
 const express = require("express")
 const app = express()
 
+//rate limiter
+app.set('trust proxy', 'loopback');
+const rateLimit = require('express-rate-limit') 
+
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000,
+	limit: 30, 
+	standardHeaders: 'draft-8',
+	legacyHeaders: false, 
+
+})
+
+
+app.use(limiter)
+
+
+
 //date format
 const format = require("date-format")
 const TimeAgo = require("javascript-time-ago")
