@@ -1,0 +1,253 @@
+<div class="row">
+
+
+
+  <div class="col-12 col-lg-9">
+      <div class="card text-white bg-dark mb-3 border-primary">
+      <div style="height: 50px" class="card-header border-primary lexend-deca-title fw-bold">
+        
+        
+        <div class="position-relative">
+  <div class="position-absolute top-0 start-0">{{game.name}}</div>
+  <div class="position-absolute top-0 end-0"><a class="no-underline text-white go-red" href="/">Əsas</a> <span aria-hidden="true">&raquo;</span><span class="no-underline text-white" href="/{{game._id}}"> Oyun</span></div>
+
+</div>
+        
+        </div>
+      <div class="card-body">
+
+
+
+
+<div class="row">
+<div class="col-lg-4 col-12">
+
+<div class="card text-white bg-warning">
+  <img class="card-img-top" src="{{game.cover}}" alt="{{game.name}}">
+
+</div>
+
+
+
+</div>
+<div class="col-lg-8 col-12">
+  <div class="card text-white bg-warning">
+<div class="card-body">
+  <section>
+ {{{formatText game.summary}}}
+</section>
+</div>
+</div>
+<p>
+<div class="d-flex justify-content-center">
+
+{{#if game.linkTorrent}}
+<a href="{{game.linkTorrent}}" target="_blank" type="button" class="btn btn-success" style="margin-right:10px">Torrent Yüklə</a>  
+{{/if}}
+{{#if game.linkDirect}}
+<a href="{{game.linkDirect}}" target="_blank" type="button" class="btn btn-primary" style="margin-right:10px"><i class="bi bi-download"> </i>Birbaşa Yüklə</a>
+{{/if}}
+{{#if game.linkDirectAlternative}}
+<a href="{{game.linkDirectAlternative}}" target="_blank" type="button" class="btn btn-primary" style="margin-right:10px"><i class="bi bi-download"> </i>Birbaşa Yüklə (Alt)</a>
+{{/if}}
+
+</div>
+
+</p>
+
+
+
+</div>
+<div class="col-lg-6 col-12 lower" >
+
+  <div class="card text-white bg-warning">
+  <div style="height: 35px" class="card-header border-primary lexend-deca-title fw-bold">Oyun Haqqında</div>
+
+<div class="card-body">
+  <span class="text-info fw-bold">Çıxış Tarixi: </span>{{game.gameOutDate}} <br>
+  <span class="text-info fw-bold">Yaddaş: </span>{{game.size}} GB<br> 
+  <span class="text-info fw-bold">Kateqoriya: </span>
+{{#each game.category}}
+<a class="no-underline go-red target-text" style="color:white" href="/kateqoriya/{{this}}">{{this}}</a> {{#unless @last}}, {{/unless}} 
+
+{{/each}}
+
+  <span class="text-info fw-bold">Görüntülənmə: </span>{{game.views}} <i class="bi bi-eye"></i>
+
+
+<br>
+  <span class="text-info fw-bold">Son yenilənmə: </span> <span class="target-date">{{game.uploadDate}}</span>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+<div class="col-lg-6 col-12 lower">
+    <div class="card text-white bg-warning">
+  <div style="height: 35px" class="card-header border-primary lexend-deca-title fw-bold">Sistem Gereksinimleri</div>
+
+<div class="card-body">
+<span>
+{{{formatText game.system}}}
+</span>
+</div>
+</div>
+
+
+</div>
+<div class="col-lg-12 col-12 lower">
+  <h3 class="lexend-deca-title fw-bold">Şəkillər</h3>
+
+<div id="gameplayImages"  data-bs-interval="false" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+
+    {{#each game.images}}
+
+        <button type="button" data-bs-target="#gameplayImages" data-bs-slide-to="{{@index}}" 
+  {{#if @first}}active  class="active" aria-current="true" {{/if}}
+    aria-label="Slide {{@index}}"></button>
+    {{/each}}
+
+
+  </div>
+  <div class="carousel-inner">
+    {{#each game.images}}
+
+    <div class="carousel-item {{#if @first}}active{{/if}}">
+      <img src="{{this}}" class="d-block w-100" alt="{{game.name}} gameplay şəkillər oynanış">
+    </div>
+    {{/each}}
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#gameplayImages" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Geri</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#gameplayImages" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">İrəli</span>
+  </button>
+</div>
+
+
+
+</div>
+
+
+
+
+<div class="col-lg-12 col-12 lower">
+  <h3 class="lexend-deca-title fw-bold">Oynanış Videosu </h3>
+
+<div class="ratio ratio-16x9">
+  <iframe width="560" height="315" src="{{game.gameplayEmbed}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+
+</div>
+</div>
+
+
+  
+</div>
+
+
+
+
+
+
+        </div>
+        
+    </div>
+    </div>
+  <div class="col-lg-3">
+    
+    <div class="row">
+      <div class="col-lg-12">
+  {{>discord}}
+</div>
+<div class="col-lg-12">
+  {{>categories}}
+</div>
+
+    </div>
+
+ 
+</div>
+</div>
+
+
+
+<style>
+  .lower{
+    margin-top: 15px;
+  }
+</style>
+
+
+
+    <script>
+        // Değişim sözlüğü
+        const replacements = {
+            "populyar": "Populyar",
+            "aciq-dunya": "Açıq Dünya",
+            "aksiyon": "Aksiyon",
+            "macera": "Macəra",
+            "fps": "FPS",
+            "sag-qalma": "Sağ Qalma",
+            "idman  ": "İdman",
+            "yaris": "Yarış",
+            "strategiya": "Strategiya",
+            "simulasiya": "Simulasiya",
+            "doyus": "Döyüş",
+            "qorxu": "Qorxu",
+            "platform": "Platform",
+            "erken-giris": "Erkən Giriş",
+            "vr": "VR",
+            "rpg": "RPG",
+            "dlc": "DLC"
+        };
+
+        // Tüm hedef metinleri seç
+        document.querySelectorAll('.target-text').forEach(el => {
+            let text = el.textContent;
+            // Her bir kelimeyi kontrol edip değiştir
+            for (let [key, value] of Object.entries(replacements)) {
+                const regex = new RegExp(`\\b${key}\\b`, 'gi'); // Tam kelime eşleşmesi için
+                text = text.replace(regex, value);
+            }
+            el.textContent = text;
+        });
+    </script>
+
+    <script>
+        // Değişim sözlüğü
+        const replacementsDate = {
+            "just now": "indicə",
+            "minutes ago": "dəqiqə əvvəl",
+            "hours ago": "saat əvvəl",
+            "day ago": "gün əvvəl",
+            "months":"ay",
+            "years":"il",
+            "month":"ay",
+            "year":"il",
+            "ago": "əvvəl",
+        };
+
+        // Tüm hedef metinleri seç
+        document.querySelectorAll('.target-date').forEach(el => {
+            let text = el.textContent;
+            // Her bir kelimeyi kontrol edip değiştir
+            for (let [key, value] of Object.entries(replacementsDate)) {
+                const regex = new RegExp(`\\b${key}\\b`, 'gi'); // Tam kelime eşleşmesi için
+                text = text.replace(regex, value);
+            }
+            el.textContent = text;
+        });
+    </script>

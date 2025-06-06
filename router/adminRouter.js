@@ -1,0 +1,150 @@
+const express=require("express")
+const router=express.Router()
+const {checkAdmin} = require('../middlewares.js')
+
+
+const Game = require("../models/game.js")
+
+
+const adminHash = "blackHoleSun"
+
+
+//main
+router.get('/',checkAdmin,(req,res)=>{
+    res.render('admin/adminIndex')
+})
+
+//upload
+router.post("/game/update/:gameId",checkAdmin,(req,res)=>{
+    var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
+    uploadDate = Date.now()
+    category = category.split(',')
+    String(gameOutDate)
+    gameOutDate = gameOutDate.substring(0,4)
+    images=images.split(',')
+
+
+    const id = req.params.gameId
+    Game.findOneAndUpdate({_id:id},{name,uploadDate, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size},{new:true}).lean()
+    .then(game=>{
+        res.redirect(`/admin/game/update/${id}`)
+    })
+    .catch(err=>{
+        res.send("404")
+        console.log(err)
+    })
+})
+router.get('/game/upload',checkAdmin,(req,res)=>{
+    res.render('admin/gameUpload')
+})
+router.get('/game/update',(req,res)=>{
+    Game.find().sort({ _id: -1 }).lean().limit(10)
+    .then(games=>{
+        res.render('admin/gameUpdate',{games})
+    })
+    .catch(err=>{
+        res.send("404")
+    })
+})
+
+router.get("/game/update/search",checkAdmin,(req,res)=>{
+    const search = req.query.oyun
+    Game.find({
+        $text: { $search: search }
+      })
+    .limit(10)
+    .lean()
+    .then(games=>{
+        res.render("admin/gameUpdate",{games})
+    })
+    .catch(err=>{
+        res.send("404")
+        console.log(err)
+    })
+})
+
+
+router.post('/game/upload',checkAdmin,(req,res)=>{
+    var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
+    category = category.split(',')
+    String(gameOutDate)
+    gameOutDate = gameOutDate.substring(0,4)
+    function toSlug(str) {
+  return str
+    .toLowerCase()                 // Küçük harfe çevir
+    .trim()                       // Baş ve sondaki boşlukları temizle
+    .replace(/\s+/g, '-')         // Bir veya daha fazla boşluğu '-' yap
+    .replace(/[^a-z0-9\-]/g, '')  // Harf, rakam ve '-' dışındakileri sil
+    .replace(/-+/g, '-');          // Birden fazla '-' varsa tek yap
+}
+    const urlTitle = toSlug(name)
+    images=images.split(',')
+    const newGame = new Game({
+        name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
+    });
+
+    newGame.save()
+    .then((savedGame)=>{
+        res.send(savedGame)
+    })
+    .catch((err)=>{
+        res.send("Xeta bas verdi")
+        console.log(err)
+    })
+})
+
+
+router.get("/game/update/:gameId",checkAdmin,(req,res)=>{
+    const id = req.params.gameId
+    Game.findById(id).lean()
+    .then(game=>{
+        // res.render('game/game',{game})
+        res.render("admin/gameUpdateAlone",{game})
+    })
+    .catch(err=>{
+        res.send('404')
+      
+    })
+})
+
+
+
+//games editing
+
+router.get("/game/delete/:gameId",checkAdmin,(req,res)=>{
+    var id = req.params.gameId
+    Game.findOneAndDelete({_id:id})
+    .then(()=>{
+        res.redirect("/admin/game/update")
+    })
+    .catch(err=>{
+        res.send("Silerken problem emele geldi")
+    })
+    
+    
+    })
+
+
+//login - auth
+
+router.get("/login", (req,res)=>{
+    res.render("admin/login")
+})
+router.post("/login",(req,res)=>{
+    const hash = req.body.hash
+    if(hash){
+        if(req.session.admin == true ){
+            res.redirect('/admin')
+        } else if(hash == adminHash){
+            req.session.admin = true
+            res.redirect("/admin")
+        } else {
+            res.redirect('/admin/login')
+        }
+    } else {
+        res.redirect('/admin/login')
+    }
+})
+
+
+module.exports=router

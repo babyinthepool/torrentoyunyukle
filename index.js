@@ -1,0 +1,86 @@
+//express
+const express = require("express")
+const app = express()
+
+//date format
+const format = require("date-format")
+const TimeAgo = require("javascript-time-ago")
+const en = require("javascript-time-ago/locale/en")
+TimeAgo.addDefaultLocale(en)
+const timeAgo = new TimeAgo('en-US')
+//database connection
+const mongoose = require('mongoose')
+require('dotenv').config();
+
+const dbUrl= process.env.dbUrl
+const port = process.env.PORT
+const secret = process.env.secret
+mongoose.connect(dbUrl, {
+}).then(() => {
+    console.log('DB baglantisi quruldu.');
+}).catch(err => {
+    console.error('Xeta!', err);
+});
+
+//session
+const session = require("express-session")
+app.use(session({
+    secret:"blackHoleSun",
+    resave: true,
+    expires: new Date(Date.now() + (30 * 24 * 3600 * 1000)),
+    saveUninitialized: true
+}))
+
+
+//cookieparser
+const cookieParser = require('cookie-parser')
+app.use(cookieParser())
+
+const Game = require("./models/game.js")
+//view engine
+const exphbs=require('express-handlebars')
+
+
+
+
+
+    app.engine('hbs', exphbs.engine({
+        extname: 'hbs',
+        helpers:{
+            formatText(text) {
+                if (!text) return '';
+                const formatted = text
+                .replace(/\n/g, '<br>')
+                .replace(/\t/g, '&emsp;');
+                return formatted
+            }
+        }
+    }));
+app.set('view engine', 'hbs');
+//static
+const path = require('path')
+app.use(express.static(path.join(__dirname, "public")));
+
+//bodyparser
+const bodyParser= require('body-parser')
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//main router
+const indexRouter = require("./router/indexRouter.js")
+const adminRouter = require("./router/adminRouter.js")
+const staticRouter = require("./router/staticRouter.js")
+const gameRouter = require("./router/gameRouter.js")
+
+app.use('/', indexRouter)
+app.use('/admin', adminRouter)
+app.use("/", staticRouter)
+app.use("/", gameRouter)
+
+
+
+
+//port connection
+app.listen(port, () => {
+    console.log(`sayt http://localhost:${port} seyfesinde acildi.`);
+});
