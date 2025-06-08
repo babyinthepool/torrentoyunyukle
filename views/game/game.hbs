@@ -147,8 +147,7 @@
   <h3 class="lexend-deca-title fw-bold">Oynanış Videosu </h3>
 
 <div class="ratio ratio-16x9">
-  <iframe class="youtube" width="560" height="315" src="{{game.gameplayEmbed}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
+<lite-youtube videoid="{{game.gameplayEmbed}}"></lite-youtube>
 
 </div>
 </div>
@@ -250,30 +249,4 @@
             el.textContent = text;
         });
     </script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const players = document.querySelectorAll(".youtube");
-
-  players.forEach(function(player) {
-    const videoId = player.dataset.id;
-    const thumbnail = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-
-    player.innerHTML = `
-      <img src="${thumbnail}" style="width:100%;cursor:pointer;" loading="lazy" alt="YouTube Thumbnail">
-    `;
-
-    player.addEventListener("click", function() {
-      const iframe = document.createElement("iframe");
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-      iframe.frameBorder = "0";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-      iframe.style.width = "100%";
-      iframe.style.height = "315px"; // You can adjust this if needed
-
-      player.innerHTML = "";
-      player.appendChild(iframe);
-    });
-  });
-});
-</script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>

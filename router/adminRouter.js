@@ -5,6 +5,19 @@ const {checkAdmin} = require('../middlewares.js')
 
 const Game = require("../models/game.js")
 
+function getYouTubeID(input) {
+  // Eğer doğrudan 11 karakterlik video ID'si verilmişse, onu döndür
+  if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
+    return input;
+  }
+  
+  // Değilse URL içerisinden ID'yi çıkar
+  const regex = /(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/;
+  const match = input.match(regex);
+  return match ? match[1] : null;
+}
+
+
 
 const adminHash = "blackHoleSun"
 
@@ -22,10 +35,10 @@ router.post("/game/update/:gameId",checkAdmin,(req,res)=>{
     String(gameOutDate)
     gameOutDate = gameOutDate.substring(0,4)
     images=images.split(',')
-
+const gameplayEmbedId = getYouTubeID(gameplayEmbed)
 
     const id = req.params.gameId
-    Game.findOneAndUpdate({_id:id},{name,uploadDate, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size},{new:true}).lean()
+    Game.findOneAndUpdate({_id:id},{name,uploadDate, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size},{new:true}).lean()
     .then(game=>{
         res.redirect(`/admin/game/update/${id}`)
     })
@@ -77,10 +90,11 @@ router.post('/game/upload',checkAdmin,(req,res)=>{
     .replace(/[^a-z0-9\-]/g, '')  // Harf, rakam ve '-' dışındakileri sil
     .replace(/-+/g, '-');          // Birden fazla '-' varsa tek yap
 }
+    const gameplayEmbedId = getYouTubeID(gameplayEmbed)
     const urlTitle = toSlug(name)
     images=images.split(',')
     const newGame = new Game({
-        name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
+        name, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
     });
 
     newGame.save()

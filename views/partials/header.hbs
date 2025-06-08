@@ -17,7 +17,7 @@
         </li>
       </ul>
       <form action="/axtar" method="get" class="d-flex">
-        <input class="form-control search-bar me-2" name="oyun" type="search" placeholder="Oyun axtar" aria-label="Search">
+        <input {{#if search}}value="{{search}}"{{/if}} class="form-control search-bar me-2" name="oyun" type="search" placeholder="Oyun axtar" aria-label="Search">
        <button class="btn btn-outline-primary search-button" type="submit">Axtar</button>
       </form>
     </div>

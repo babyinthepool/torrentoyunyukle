@@ -65,7 +65,8 @@ router.get("/axtar",async (req,res)=>{
             hasNextPage: page<totalPages,
             hasPrevPage: page>1,
             nextPage: page+1,
-            prevPage: page-1
+            prevPage: page-1,
+            search: search
         })
     })
     .catch(err=>{

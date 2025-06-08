@@ -30,7 +30,7 @@ const mongoose = require('mongoose')
 require('dotenv').config();
 
 const dbUrl= process.env.dbUrl
-const port = process.env.PORT
+const port = process.env.port
 const secret = process.env.secret
 mongoose.connect(dbUrl, {
 }).then(() => {
