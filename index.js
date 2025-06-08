@@ -8,7 +8,7 @@ const rateLimit = require('express-rate-limit')
 
 const limiter = rateLimit({
 	windowMs: 15 * 60 * 1000,
-	limit: 30, 
+	limit: 100, 
 	standardHeaders: 'draft-8',
 	legacyHeaders: false, 
 
@@ -47,6 +47,7 @@ app.use(session({
     expires: new Date(Date.now() + (30 * 24 * 3600 * 1000)),
     saveUninitialized: true
 }))
+
 
 
 //cookieparser
