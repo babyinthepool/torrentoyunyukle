@@ -2,6 +2,7 @@
 const express = require("express")
 const app = express()
 
+
 //rate limiter
 app.set('trust proxy', 'loopback');
 const rateLimit = require('express-rate-limit') 
@@ -16,6 +17,9 @@ const limiter = rateLimit({
 
 
 app.use(limiter)
+// compression
+const compression = require('compression');
+app.use(compression());
 
 
 
