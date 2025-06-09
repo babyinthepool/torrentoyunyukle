@@ -226,7 +226,7 @@ res.render("admin/addIndex")
 })
 router.post("/add-index",checkAdmin,(req,res)=>{
     const {url, changefreq, priority} = req.body
-    const lastmod = new Date()
+    const lastmod = new Date().toISOString();
     const newPage = new Page({
         url,
         changefreq,
