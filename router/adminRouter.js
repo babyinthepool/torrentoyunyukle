@@ -3,6 +3,7 @@ const router=express.Router()
 const {checkAdmin} = require('../middlewares.js')
 
 
+const Page = require("../models/page.js")
 const Game = require("../models/game.js")
 
 function getYouTubeID(input) {
@@ -170,7 +171,7 @@ router.post("/game/upgrade/edit/:gameId/:upgradeId",checkAdmin,(req,res)=>{
 // game upload
 
 
-router.post('/game/upload',checkAdmin,(req,res)=>{
+router.post('/game/upload',checkAdmin,async (req,res)=>{
     var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
     category = category.split(',')
     String(gameOutDate)
@@ -183,18 +184,60 @@ router.post('/game/upload',checkAdmin,(req,res)=>{
     .replace(/[^a-z0-9\-]/g, '')  // Harf, rakam ve '-' dışındakileri sil
     .replace(/-+/g, '-');          // Birden fazla '-' varsa tek yap
 }
+
+
+
+
     const gameplayEmbedId = getYouTubeID(gameplayEmbed)
     const urlTitle = toSlug(name)
     images=images.split(',')
+
+
+try {
+  const newPage = new Page({
+    url: urlTitle,
+    lastmod: new Date()
+  });
+
+  await newPage.save();
+} catch (err) {
+  console.log(err);
+  res.send("Xeta bas verdi");
+}
+
     const newGame = new Game({
         name, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
     });
 
     newGame.save()
     .then((savedGame)=>{
-        res.send(savedGame)
+        res.redirect(`/${urlTitle}`)
     })
     .catch((err)=>{
+        res.send("Xeta bas verdi")
+        console.log(err)
+    })
+})
+
+router.get("/add-index",checkAdmin,(req,res)=>{
+res.render("admin/addIndex")
+
+
+})
+router.post("/add-index",checkAdmin,(req,res)=>{
+    const {url, changefreq, priority} = req.body
+    const lastmod = new Date()
+    const newPage = new Page({
+        url,
+        changefreq,
+        priority,
+        lastmod
+    })
+    newPage.save()
+    .then(()=>{
+        res.redirect("/admin/add-index")
+    })
+    .catch(err=>{
         res.send("Xeta bas verdi")
         console.log(err)
     })

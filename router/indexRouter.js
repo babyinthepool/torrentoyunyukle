@@ -2,6 +2,35 @@ const express=require("express")
 const router=express.Router()
 
 const Game = require("../models/game.js")
+const Page = require("../models/page.js")
+const { SitemapStream, streamToPromise } = require('sitemap');
+const { Readable } = require('stream');
+
+
+//sitemap
+router.get('/sitemap.xml', async (req, res) => {
+  try {
+    const pages = await Page.find();
+
+    const links = pages.map(page => ({
+      url: page.url,
+      changefreq: page.changefreq,
+      priority: page.priority,
+      lastmod: page.lastmod
+    }));
+
+    const stream = new SitemapStream({ hostname: 'https://www.torrentoyunyukle.xyz' });
+    const xml = await streamToPromise(Readable.from(links).pipe(stream));
+
+    res.header('Content-Type', 'application/xml');
+    res.send(xml.toString());
+  } catch (e) {
+    console.error(e);
+    res.status(500).end();
+  }
+});
+
+
 
 
 
