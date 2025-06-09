@@ -12,7 +12,6 @@ router.get('/:urlTitle',async (req,res)=>{
     Game.findOne({urlTitle}).lean()
     .then(async (game)=>{
        if(req.cookies.viewed != urlTitle){
-        console.log(req.cookies.viewed)
         res.cookie("viewed", urlTitle, {maxAge: 30 * 24 * 3600 * 1000,value: urlTitle})
         const views = await game.views +1
         var gameUp = await Game.findOneAndUpdate({urlTitle:urlTitle},{views:game.views+1},{new:true})

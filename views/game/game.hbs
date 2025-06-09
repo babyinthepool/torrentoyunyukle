@@ -20,7 +20,7 @@
 
 
 <div class="row">
-<div class="col-lg-4 col-12">
+<div class="col-lg-3 col-12">
 
 <div class="card text-white bg-warning">
   <img class="card-img-top" src="{{game.cover}}" alt="{{game.name}}">
@@ -30,7 +30,7 @@
 
 
 </div>
-<div class="col-lg-8 col-12">
+<div class="col-lg-9 col-12">
   <div class="card text-white bg-warning">
 <div class="card-body">
   <section>
@@ -41,23 +41,64 @@
 <p>
 <div class="d-flex justify-content-center">
 
+
 {{#if game.linkTorrent}}
-<a href="{{game.linkTorrent}}" target="_blank" type="button" class="btn btn-success" style="margin-right:10px">Torrent Yüklə</a>  
-{{/if}}
-{{#if game.linkDirect}}
-<a href="{{game.linkDirect}}" target="_blank" type="button" class="btn btn-primary" style="margin-right:10px"><i class="bi bi-download"> </i>Birbaşa Yüklə</a>
-{{/if}}
-{{#if game.linkDirectAlternative}}
-<a href="{{game.linkDirectAlternative}}" target="_blank" type="button" class="btn btn-primary" style="margin-right:10px"><i class="bi bi-download"> </i>Birbaşa Yüklə (Alt)</a>
+
+<a href="{{game.linkTorrent}}" target="_blank" type="button" class="btn btn-success">Torrent Yüklə</a>  
+
 {{/if}}
 
+
+{{#if game.linkDirect}}
+<a href="{{game.linkDirect}}" target="_blank" type="button" style="margin-left: 15px;" style="padding-right: 12px;padding-left: 12px" class="btn btn-primary"><i class="bi bi-download"> </i>Birbaşa Yüklə</a>
+
+{{/if}}
+
+{{#if game.linkDirectAlternative}}
+<a href="{{game.linkDirectAlternative}}" target="_blank" style="margin-left: 15px;" type="button" class="btn btn-primary" ><i class="bi bi-download"> </i>Birbaşa Yüklə (Alt)</a>
+{{/if}}
 </div>
+
+
+
+
+
 
 </p>
 
 
 
 </div>
+
+{{#if game.upgrades}}
+
+<div class="col-12 lower">
+
+  <div class="card text-white bg-warning">
+  <div style="height: 35px" class="card-header border-primary lexend-deca-title fw-bold">Güncəlləmələr</div>
+<div class="card-body">
+
+{{#each game.upgrades}}
+
+  <a class="fw-bold text-decoration-none hover-underline" style="text-decoration: underline;" href="{{this.link}}" style="color: #C0C0C0;" >{{this.title}}</a> {{this.summary}} <br>
+  {{#unless @last}}
+    {{#if (gt ../game.upgrades.length 1)}}
+      <hr>
+    {{/if}}
+  {{/unless}}
+{{/each}}
+
+</div>
+
+
+</div>
+
+</div>
+{{/if}}
+
+
+
+
 <div class="col-lg-6 col-12 lower" >
 
   <div class="card text-white bg-warning">
@@ -71,6 +112,7 @@
 <a class="no-underline go-red target-text" style="color:white" href="/kateqoriya/{{this}}">{{this}}</a> {{#unless @last}}, {{/unless}} 
 
 {{/each}}
+<br>
 
   <span class="text-info fw-bold">Görüntülənmə: </span>{{game.views}} <i class="bi bi-eye"></i>
 
@@ -249,4 +291,6 @@
             el.textContent = text;
         });
     </script>
+
+
 <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>

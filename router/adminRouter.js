@@ -77,6 +77,99 @@ router.get("/game/update/search",checkAdmin,(req,res)=>{
 })
 
 
+//upgrade
+router.get("/game/upgrade/:gameId",checkAdmin,async (req,res)=>{
+    const id = req.params.gameId
+    const game = await Game.findById(id).lean()
+    if(game){
+        res.render("admin/gameUpgrade",{upgrades:game.upgrades, game:game})
+    } else {
+        res.send("404")
+    }
+})
+
+router.post("/game/upgrade/add/:gameId",checkAdmin,(req,res)=>{
+
+    const id = req.params.gameId
+    const {title, link, summary} = req.body
+
+    Game.findOneAndUpdate(
+        {_id: id},
+        {$push: {upgrades: {title, link, summary}}},
+        {new: true}
+    ).lean()
+    .then(game=>{
+        res.redirect(`/admin/game/upgrade/${id}`)
+    })
+    .catch(err=>{
+        res.send("404")
+        console.log(err)
+    })
+
+})
+
+router.get("/game/upgrade/:gameId/:upgradeId",checkAdmin, async(req,res)=>{
+    const gameId = req.params.gameId
+    const upgradeId = req.params.upgradeId
+
+    
+const game = await Game.findById(gameId).lean().catch(err => {
+  res.send("404 - Game not found");
+  return;
+});
+
+
+const upgrade = await game.upgrades.find(upg => upg._id.toString() === upgradeId.toString());
+
+if (upgrade == undefined) {
+  res.send("404 - Upgrade not found");
+  return;
+}
+
+console.log(upgrade)
+res.render("admin/gameUpgradeAlone", { game, upgrade });
+})
+
+
+router.get("/game/upgrade/delete/:gameId/:upgradeId",checkAdmin,(req,res)=>{   
+    const gameId = req.params.gameId
+    const upgradeId = req.params.upgradeId
+
+    Game.findOneAndUpdate(
+        {_id: gameId},
+        {$pull: {upgrades: {_id: upgradeId}}},
+        {new: true}
+    ).lean()
+    .then(game=>{
+        res.redirect(`/admin/game/upgrade/${gameId}`)
+    })
+    .catch(err=>{
+        res.send("404")
+        console.log(err)
+    })
+})
+
+router.post("/game/upgrade/edit/:gameId/:upgradeId",checkAdmin,(req,res)=>{
+    const gameId = req.params.gameId
+    const upgradeId = req.params.upgradeId
+    const {title, link, summary} = req.body
+
+    Game.findOneAndUpdate(
+        {_id: gameId, "upgrades._id": upgradeId},
+        {$set: {"upgrades.$.title": title, "upgrades.$.link": link, "upgrades.$.summary": summary}},
+        {new: true}
+    ).lean()
+    .then(game=>{
+        res.redirect(`/admin/game/upgrade/${gameId}/${upgradeId}`)
+    })
+    .catch(err=>{
+        res.send("404")
+        console.log(err)
+    })
+})
+// game upload
+
+
 router.post('/game/upload',checkAdmin,(req,res)=>{
     var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
     category = category.split(',')
@@ -159,6 +252,7 @@ router.post("/login",(req,res)=>{
         res.redirect('/admin/login')
     }
 })
+
 
 
 module.exports=router

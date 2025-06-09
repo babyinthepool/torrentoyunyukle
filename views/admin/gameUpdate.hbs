@@ -8,42 +8,45 @@
 
 
 
+<table style="margin-top: 10px;" class="table table-dark table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Ad</th>
+      <th scope="col">Oyunu Sil</th>
+      <th scope="col">Güncəlləmələr</th>
+    </tr>
+  </thead>
+  <tbody>
 
-{{#each games}}
+    
+    {{#each games}}
 
 
-      <ul style="margin-top: 10px;" class="list-group list-group-horizontal" {{#if @first}}style="margin-top: 15px;"{{/if}}>
 
-    <li class="list-group-item bg-dark text-white">
-<a href="/admin/game/update/{{_id}}" class="no-underline fw-bold text-white">{{name}}</a>
-    </li>
+    <tr>
 
-<!-- Modal -->
-{{!-- <div class="modal fade" id="{{_id}}" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content bg-dark text-white">
-      <div class="modal-header">
-        <h5 class="modal-title">{{name}}</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-       Oyunu saytdan silməyə əminsiniz?
+      <td><a href="/admin/game/update/{{_id}}" class="no-underline fw-bold text-white">{{name}}</a></td>
 
-             </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Ləğv et</button>
-        <a href="/admin/game/delete/{{_id}}"   class="btn btn-primary">Bəli</a>
-      </div>
-    </div>
-  </div>
-</div>
- --}}
-        <a href="/admin/game/delete/{{_id}}"   class="btn btn-primary">Oyunu sil</a>
+      <td>        <a href="/admin/game/delete/{{_id}}"   class="btn btn-primary">Oyunu sil</a></td>
+    
+   <td> <a style="margin-left: 10px;" href="/admin/game/upgrade/{{_id}}"   class="btn btn-success">Güncəlləmələr</a></td>
+    
 
-    </li>
- </ul>
+    </tr>
+
+
 
 {{/each}}
+
+    
+
+  </tbody>
+</table>
+
+
+
+
+
 
  
 

@@ -1,5 +1,12 @@
 const mongoose = require('mongoose')
 
+const updateSchema = new mongoose.Schema({
+    title: { type: String },
+    link: { type: String },
+    summary: { type: String }
+})
+
+
 const GameSchema = new mongoose.Schema({
     name:{type:String},
     summary:{type:String},
@@ -15,7 +22,8 @@ const GameSchema = new mongoose.Schema({
     gameplayEmbed:{type: String},
     system:{type:String},
     views: {type:Number, default: 0},
-    urlTitle: {type:String, unique:true}
+    urlTitle: {type:String, unique:true},
+    upgrades: [updateSchema]
 })
 
 GameSchema.index({ name: 'text'});
