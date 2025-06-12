@@ -10,5 +10,8 @@ router.get('/nece-yukleyek',(req,res)=>{
 })
 
 
+router.get('/discord',(req,res)=>{
+    res.render('static/redirectDiscord')
+})
 
 module.exports=router
