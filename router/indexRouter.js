@@ -35,7 +35,7 @@ router.get('/sitemap.xml', async (req, res) => {
 
 
 router.get('/',async (req,res)=>{
-    const page = parseInt(req.query.sehife) || 1
+    const page = parseInt(req.query.page) || 1
     const limit = 12
     const totalGames = await Game.countDocuments()
     const totalPages = Math.ceil(totalGames/limit)
