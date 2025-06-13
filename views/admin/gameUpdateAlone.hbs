@@ -3,7 +3,7 @@
 
 
 
-<h1>Oyun Güncəllə - <span class="text-info">{{game.name}}</span></h1>
+<h1><a href="/admin/game/update" rel="nofollow noreferer"><button type="button" style="margin-bottom: 5px;" class="btn btn-success"><i class="bi bi-arrow-left-circle-fill"></i></button></a> Oyun Güncəllə - <span class="text-info">{{game.name}}</span></h1>
 <form action="/admin/game/update/{{game._id}}" method="post" enctype="application/x-www-form-urlencoded">
  <div class="row">
   <div class="col-lg-4 col-6">
@@ -18,7 +18,7 @@
   </div>
     <div class="col-lg-4 col-12">
         <label for="gameOutDate" class="fw-bold text-info col-form-label">Çıxış tarixi:</label>
-<input id="gameOutDate" name="gameOutDate" value="{{game.gameOutDate}}-01-01" class="form-control" type="date" />
+<input id="gameOutDate" name="gameOutDate" value="{{game.gameOutDate}}" class="form-control" type="date" />
 
   </div>
     <div class="col-lg-6 col-12">

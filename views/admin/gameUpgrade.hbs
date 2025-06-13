@@ -1,7 +1,7 @@
   <link rel="stylesheet" href="../../../css/main.css">
 
 
-<h1>Güncəlləmələr - <span class="text-info">{{game.name}}</span></h1>
+<h1><a href="/admin/game/update" rel="nofollow noreferer"><button type="button" style="margin-bottom: 5px;" class="btn btn-success"><i class="bi bi-arrow-left-circle-fill"></i></button></a> Güncəlləmələr - <span class="text-info">{{game.name}}</span></h1>
 
 
 
@@ -26,7 +26,7 @@
 
       <td>{{this.title}}</td>
 
-      <td>        <a href="{{this.link}}">{{this.link}}</a></td>
+      <td>        <a class="gameLink" href="{{this.link}}">{{this.link}}</a></td>
     
    <td> <a href="/admin/game/upgrade/{{../game._id}}/{{this._id}}"   class="btn btn-success">Dəyişiklik Et</a></td>
    <td> <a href="/admin/game/upgrade/delete/{{../game._id}}/{{this._id}}"   class="btn btn-primary">Sil</a></td>
@@ -78,3 +78,10 @@
 
 
  </div>
+     <script>
+        document.querySelectorAll('.gameLink').forEach(el => {
+            if (el.textContent.length > 30) {
+                el.textContent = el.textContent.slice(0, 30) + '...';
+            }
+        });
+    </script>

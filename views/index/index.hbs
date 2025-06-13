@@ -31,15 +31,12 @@
                 src="{{cover}}"
                 class="card-img-top game-cover"
                 alt="{{name}},{{category}}"
+                width="270px"
+                height="280px"
               />
               </a>
-              {{name}}
+               <div class="gameTitle">{{name}}</div>
             </div>
-
-
-
-
-
           </div>
 
 {{/each}}
@@ -145,7 +142,18 @@
             }
             el.textContent = text;
         });
+
+
     </script>
+    <script>
+        document.querySelectorAll('.gameTitle').forEach(el => {
+            if (el.textContent.length > 23) {
+                el.textContent = el.textContent.slice(0, 23) + '...';
+            }
+        });
+    </script>
+
+    
 
 <style>
 

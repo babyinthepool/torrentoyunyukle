@@ -66,8 +66,6 @@ const exphbs=require('express-handlebars')
 
 
 
-
-
     app.engine('hbs', exphbs.engine({
         extname: 'hbs',
         helpers:{
@@ -81,8 +79,7 @@ const exphbs=require('express-handlebars')
                 gt: function (a, b) {
                 return a > b;
     }
-        }
-    }));
+    }}));
 app.set('view engine', 'hbs');
 //static
 const path = require('path')

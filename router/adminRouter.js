@@ -6,6 +6,9 @@ const {checkAdmin} = require('../middlewares.js')
 const Page = require("../models/page.js")
 const Game = require("../models/game.js")
 
+const moment = require('moment')
+moment.locale('az')
+
 function getYouTubeID(input) {
   // Eğer doğrudan 11 karakterlik video ID'si verilmişse, onu döndür
   if (/^[A-Za-z0-9_-]{11}$/.test(input)) {
@@ -20,7 +23,7 @@ function getYouTubeID(input) {
 
 
 
-const adminHash = "blackHoleSun"
+const adminHash = process.env.secret
 
 
 //main
@@ -33,8 +36,6 @@ router.post("/game/update/:gameId",checkAdmin,(req,res)=>{
     var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
     uploadDate = Date.now()
     category = category.split(',')
-    String(gameOutDate)
-    gameOutDate = gameOutDate.substring(0,4)
     images=images.split(',')
 const gameplayEmbedId = getYouTubeID(gameplayEmbed)
 
@@ -174,8 +175,6 @@ router.post("/game/upgrade/edit/:gameId/:upgradeId",checkAdmin,(req,res)=>{
 router.post('/game/upload',checkAdmin,async (req,res)=>{
     var {name, category,gameOutDate,summary,system,cover,gameplayEmbed,images,linkTorrent,linkDirect,linkDirectAlternative,size} = req.body;
     category = category.split(',')
-    String(gameOutDate)
-    gameOutDate = gameOutDate.substring(0,4)
     function toSlug(str) {
   return str
     .toLowerCase()                 // Küçük harfe çevir
@@ -248,6 +247,8 @@ router.get("/game/update/:gameId",checkAdmin,(req,res)=>{
     const id = req.params.gameId
     Game.findById(id).lean()
     .then(game=>{
+    game.gameOutDate = moment(game.gameOutDate, 'YYYY-MM-DD').format('').slice(0,10) || ""
+console.log(game.gameOutDate)
         // res.render('game/game',{game})
         res.render("admin/gameUpdateAlone",{game})
     })

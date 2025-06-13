@@ -23,6 +23,7 @@
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
     "javascript-time-ago": "^2.5.11",
+    "moment": "^2.30.1",
     "mongoose": "^8.10.0",
     "sass": "^1.85.0",
     "sitemap": "^8.0.0"

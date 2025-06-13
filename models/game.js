@@ -11,7 +11,7 @@ const GameSchema = new mongoose.Schema({
     name:{type:String},
     summary:{type:String},
     uploadDate: { type: Date, default: Date.now },
-    gameOutDate: { type: Number },
+    gameOutDate: { type: Date },
     cover: {type:String},
     linkTorrent:{type:String},
     linkDirect:{type:String},

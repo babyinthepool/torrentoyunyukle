@@ -75,7 +75,7 @@
 <div class="col-12 lower">
 
   <div class="card text-white bg-warning">
-  <div style="height: 35px" class="card-header border-primary lexend-deca-title fw-bold">Güncəlləmələr - <i>Yükləmək üçün güncəlləmə adına basın.</i></div>
+  <div class="card-header border-primary lexend-deca-title fw-bold">Güncəlləmələr - <i>Yükləmək üçün güncəlləmə adına basın.</i></div>
 <div class="card-body">
 
 {{#each game.upgrades}}
@@ -109,7 +109,7 @@
   <span class="text-info fw-bold">Yaddaş: </span>{{game.size}} GB<br> 
   <span class="text-info fw-bold">Kateqoriya: </span>
 {{#each game.category}}
-<a class="no-underline go-red target-text" style="color:white" href="/kateqoriya/{{this}}">{{this}}</a> {{#unless @last}}, {{/unless}} 
+<a class="no-underline go-red target-text" style="color:white" href="/kateqoriya/{{this}}">{{this}}</a>{{#unless @last}}, {{/unless}} 
 
 {{/each}}
 <br>
@@ -163,7 +163,7 @@
     {{#each game.images}}
 
     <div class="carousel-item {{#if @first}}active{{/if}}">
-      <img src="{{this}}" class="d-block w-100" alt="{{game.name}} gameplay şəkillər oynanış">
+      <img src="{{this}}" class="d-block w-100 fixed-carousel-img" alt="{{game.name}} gameplay şəkillər oynanış">
     </div>
     {{/each}}
 
@@ -286,7 +286,7 @@
         });
     </script>
 
-    <script>
+    {{!-- <script>
         // Değişim sözlüğü
         const replacementsDate = {
             "just now": "indicə",
@@ -312,7 +312,18 @@
             }
             el.textContent = text;
         });
-    </script>
-
+    </script> --}}
+<style>
+.fixed-carousel-img {
+  width: 100%;        
+  height: 520px;        
+  object-fit: cover;     
+}
+@media (max-width: 768px) {
+  .fixed-carousel-img {
+    height: 190px;
+  }
+}
+</style>
 
 <script type="module" src="https://cdn.jsdelivr.net/npm/@justinribeiro/lite-youtube@1/lite-youtube.min.js"></script>
