@@ -52,7 +52,9 @@ app.use(session({
     saveUninitialized: true
 }))
 
-
+//admin state
+const {adminState} = require('./middlewares.js')
+app.use(adminState)
 
 //cookieparser
 const cookieParser = require('cookie-parser')

@@ -58,7 +58,8 @@ router.get('/',async (req,res)=>{
             hasNextPage: page<totalPages,
             hasPrevPage: page>1,
             nextPage: page+1,
-            prevPage: page-1
+            prevPage: page-1,
+            adminState: res.locals.admin || false
         })
         
     })
@@ -111,6 +112,7 @@ router.get("/kateqoriya/:category", (req,res)=>{
         category: { $regex: new RegExp(category, 'i') }
 
     })
+    .sort({ _id: -1 })
     .limit(10)
     .lean()
     .then(games=>{

@@ -14,7 +14,6 @@ router.get('/:urlTitle',async (req,res)=>{
        if(req.cookies.viewed != urlTitle){
         res.cookie("viewed", urlTitle, {maxAge: 30 * 24 * 3600 * 1000,value: urlTitle})
         var gameUp = await Game.findOneAndUpdate({urlTitle:urlTitle},{views:game.views+1},{new:true})
-        
        }
        game.uploadDate = timeAgo.format(game.uploadDate)
         res.render("game/game",{game})

@@ -5,3 +5,11 @@ exports.checkAdmin= (req,res,next) =>{
         res.redirect("/")
     }
 }
+exports.adminState= (req,res,next) =>{
+    if(req.session.admin==true){
+        res.locals.admin=true
+    } else {
+        res.locals.admin=false
+    }
+    next()
+}

@@ -15,6 +15,11 @@
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Blog</a>
         </li>
+        {{#if admin}}
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin Panel</a>
+        </li>
+        {{/if}}
       </ul>
       <form action="/axtar" method="get" class="d-flex">
         <input {{#if search}}value="{{search}}"{{/if}} class="form-control search-bar me-2" name="oyun" type="search" placeholder="Oyun axtar" aria-label="Search">
