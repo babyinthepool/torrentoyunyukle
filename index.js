@@ -2,7 +2,6 @@
 const express = require("express")
 const app = express()
 
-
 //rate limiter
 app.set('trust proxy', 'loopback');
 const rateLimit = require('express-rate-limit') 
@@ -97,6 +96,11 @@ app.set('view engine', 'hbs');
 //static
 const path = require('path')
 app.use(express.static(path.join(__dirname, "public")));
+
+
+
+
+
 
 //bodyparser
 const bodyParser= require('body-parser')

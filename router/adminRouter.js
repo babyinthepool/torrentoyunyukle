@@ -6,6 +6,8 @@ const {checkAdmin} = require('../middlewares.js')
 const Page = require("../models/page.js")
 const Game = require("../models/game.js")
 
+
+
 const moment = require('moment')
 moment.locale('az')
 
@@ -38,6 +40,9 @@ router.post("/game/update/:gameId",checkAdmin,(req,res)=>{
     category = category.split(',')
     images=images.split(',')
 const gameplayEmbedId = getYouTubeID(gameplayEmbed)
+
+
+
 
     const id = req.params.gameId
     Game.findOneAndUpdate({_id:id},{name,uploadDate, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size},{new:true}).lean()
@@ -200,9 +205,10 @@ try {
 
   await newPage.save();
 } catch (err) {
-  console.log(err);
-  res.send("Xeta bas verdi");
+          return res.redirect(`/${urlTitle}`)
+
 }
+
 
     const newGame = new Game({
         name, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
@@ -210,11 +216,10 @@ try {
 
     newGame.save()
     .then((savedGame)=>{
-        res.redirect(`/${urlTitle}`)
+        return res.redirect(`/${urlTitle}`)
     })
     .catch((err)=>{
-        res.send("Xeta bas verdi")
-        console.log(err)
+        res.redirect('/admin/game/upload')
     })
 })
 
