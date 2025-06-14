@@ -43,13 +43,26 @@ mongoose.connect(dbUrl, {
     console.error('Xeta!', err);
 });
 
+
 //session
 const session = require("express-session")
+//connect-mongo to use ssession with mongodb
+const MongoStore = require('connect-mongo');
+
+
+
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl: dbUrl,
+        collectionName: 'sessions',
+        ttl: 30 * 24 * 3600, // 30 days
+    }),
+    
+
     secret:"blackHoleSun",
     resave: true,
     expires: new Date(Date.now() + (30 * 24 * 3600 * 1000)),
-    saveUninitialized: true
+    saveUninitialized: true,
 }))
 
 //admin state

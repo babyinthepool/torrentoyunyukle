@@ -13,6 +13,13 @@ const timeAgo = new TimeAgo('az-AZ')
 const moment = require('moment')
 moment.locale('az')
 moment().format('LLL');
+
+sliceDescription = (description) => {
+    if (description.length > 155) {
+        return description.slice(0, 155) + '...';
+    }
+    return description;
+}
 //how to use moment.js
 router.get('/:urlTitle',async (req,res)=>{
     const urlTitle = req.params.urlTitle
@@ -23,9 +30,9 @@ router.get('/:urlTitle',async (req,res)=>{
         var gameUp = await Game.findOneAndUpdate({urlTitle:urlTitle},{views:game.views+1},{new:true})
        }
       game.gameOutDate = moment(game.gameOutDate).format('ll');
-
+      const seoDescription = sliceDescription(game.summary)
        game.uploadDate = timeAgo.format(game.uploadDate)
-        res.render("game/game",{game})
+        res.render("game/game",{game,seoDescription})
 
     })
     .catch(err=>{
