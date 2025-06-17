@@ -15,6 +15,7 @@ const limiter = rateLimit({
 })
 
 
+
 app.use(limiter)
 // compression
 const compression = require('compression');
@@ -54,19 +55,49 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: dbUrl,
         collectionName: 'sessions',
-        ttl: 30 * 24 * 3600, // 30 days
+        ttl: 30 * 24 * 3600 * 1000, // 30 days
     }),
     
 
     secret:"blackHoleSun",
     resave: true,
-    expires: new Date(Date.now() + (30 * 24 * 3600 * 1000)),
+    expires: new Date(Date.now() + (30 * 24 * 3600 * 1000 * 50)),
     saveUninitialized: true,
 }))
 
 //admin state
 const {adminState} = require('./middlewares.js')
 app.use(adminState)
+
+const User = require('./models/user.js')
+//check user
+const checkUser = function (req,res,next){
+    if (req.session && req.session.user) {
+        User.findById(req.session.user)
+            .lean()
+            .then(user => {
+                if (user) {
+                    res.locals.user = user
+                    req.session.user=user;
+                    if(user.role =="admin"){
+                       req.session.admin = true
+                    }
+                } else {
+                    res.locals.user = null;
+                }
+                next();
+            })
+            .catch(err => {
+                res.locals.user = null;
+                next();
+            });
+    } else {
+        res.locals.user = null;
+        next();
+    }
+}
+app.use(checkUser)
+
 
 //cookieparser
 const cookieParser = require('cookie-parser')
@@ -75,6 +106,7 @@ app.use(cookieParser())
 const Game = require("./models/game.js")
 //view engine
 const exphbs=require('express-handlebars')
+
 
 
 
@@ -90,7 +122,20 @@ const exphbs=require('express-handlebars')
             },
                 gt: function (a, b) {
                 return a > b;
-    }
+    },
+    eq: function(a, b) {
+        return a === b;
+    },
+    range: function(start, end) {
+        let arr = [];
+        for (let i = start; i <= end; i++) {
+            arr.push(i);
+        }
+        return arr;
+    },
+    lte: function(a, b) {
+        return a <= b;
+    },
     }}));
 app.set('view engine', 'hbs');
 //static
@@ -112,12 +157,14 @@ const indexRouter = require("./router/indexRouter.js")
 const adminRouter = require("./router/adminRouter.js")
 const staticRouter = require("./router/staticRouter.js")
 const gameRouter = require("./router/gameRouter.js")
+const userRouter = require("./router/userRouter.js")
+
 
 app.use('/', indexRouter)
 app.use('/admin', adminRouter)
 app.use("/", staticRouter)
 app.use("/", gameRouter)
-
+app.use("/istifadeci", userRouter)
 
 
 

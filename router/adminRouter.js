@@ -133,7 +133,6 @@ if (upgrade == undefined) {
   return;
 }
 
-console.log(upgrade)
 res.render("admin/gameUpgradeAlone", { game, upgrade });
 })
 
@@ -209,9 +208,9 @@ try {
 
 }
 
-
+const uploader = req.session.user ? req.session.user._id : null
     const newGame = new Game({
-        name, category,gameOutDate,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
+        name, category,gameOutDate,uploader,summary,system,cover,gameplayEmbed:gameplayEmbedId,images,linkTorrent,linkDirect,linkDirectAlternative,size,urlTitle
     });
 
     newGame.save()
@@ -253,8 +252,7 @@ router.get("/game/update/:gameId",checkAdmin,(req,res)=>{
     Game.findById(id).lean()
     .then(game=>{
     game.gameOutDate = moment(game.gameOutDate, 'YYYY-MM-DD').format('').slice(0,10) || ""
-console.log(game.gameOutDate)
-        // res.render('game/game',{game})
+    // res.render('game/game',{game})
         res.render("admin/gameUpdateAlone",{game})
     })
     .catch(err=>{

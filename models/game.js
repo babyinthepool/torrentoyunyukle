@@ -23,7 +23,8 @@ const GameSchema = new mongoose.Schema({
     system:{type:String},
     views: {type:Number, default: 0},
     urlTitle: {type:String, unique:true},
-    upgrades: [updateSchema]
+    upgrades: [updateSchema],
+    uploader: {type: String},
 })
 
 GameSchema.index({ name: 'text'});

@@ -23,9 +23,11 @@
     "express-handlebars": "^8.0.1",
     "express-rate-limit": "^7.5.0",
     "express-session": "^1.18.1",
+    "imgur-anonymous-uploader": "^1.1.7",
     "javascript-time-ago": "^2.5.11",
     "moment": "^2.30.1",
     "mongoose": "^8.10.0",
+    "multer": "^2.0.1",
     "sass": "^1.85.0",
     "sitemap": "^8.0.0"
   },

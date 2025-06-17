@@ -11,6 +11,8 @@ img {
   color: rgb(190, 49, 68) !important;
 }
 
+
+
 .no-underline {
   text-decoration: none;
 }
@@ -70,6 +72,27 @@ img {
 }
 .nav-item:hover {
   background-color: rgb(135, 35, 65);
+}
+/* .navbar-btn{
+  margin-top: 5px!important;
+} */
+/* navbar-btn make margin-top:5px only in mobile phones */
+@media (max-width: 720px) {
+  .navbar-btn {
+    margin-top: 5px !important;
+  }
+}
+
+.pp {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+.no-gored:hover {
+  color: inherit !important;
 }
 
 .pagination .page-link {
