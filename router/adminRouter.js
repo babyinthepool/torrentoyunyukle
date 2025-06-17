@@ -279,27 +279,6 @@ router.get("/game/delete/:gameId",checkAdmin,(req,res)=>{
     })
 
 
-//login - auth
-
-router.get("/login", (req,res)=>{
-    res.render("admin/login")
-})
-router.post("/login",(req,res)=>{
-    const hash = req.body.hash
-    if(hash){
-        if(req.session.admin == true ){
-            res.redirect('/admin')
-        } else if(hash == adminHash){
-            req.session.admin = true
-            res.redirect("/admin")
-        } else {
-            res.redirect('/admin/login')
-        }
-    } else {
-        res.redirect('/admin/login')
-    }
-})
-
 
 
 module.exports=router
