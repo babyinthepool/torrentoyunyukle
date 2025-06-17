@@ -55,13 +55,13 @@ app.use(session({
     store: MongoStore.create({
         mongoUrl: dbUrl,
         collectionName: 'sessions',
-        ttl: 30 * 24 * 3600 * 1000, // 30 days
+        ttl: 172800 * 15, // 30 days
     }),
     
 
     secret:"blackHoleSun",
     resave: true,
-    expires: new Date(Date.now() + (30 * 24 * 3600 * 1000 * 50)),
+    expires: new Date(Date.now() + (172800 * 15)),
     saveUninitialized: true,
 }))
 
