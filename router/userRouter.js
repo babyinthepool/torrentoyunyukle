@@ -241,6 +241,7 @@ router.get("/yadda-saxlanilan-oyunlar", (req, res) => {
                 .then(async games=>{
                         const totalGames = await Game.find({ urlTitle: { $in: gameUrls } }).countDocuments()
                         const totalPages = Math.ceil(totalGames/limit)
+                        games.reverse();
                                 res.render("user/savedGames", { bookmarks, games,
             currentPage:page,
             totalPages,
