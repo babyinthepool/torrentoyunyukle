@@ -13,7 +13,7 @@
   </div>
   <div class="col-lg-4 col-6">
             <label for="category" class="fw-bold text-info col-form-label">Kateqoriyalar:</label>
-    <input class="form-control" id="category" value="{{game.category}}" name="category" type="text" placeholder="Oyunun kateqoriyalarını daxil edin" aria-label="category">
+    <input oninput="this.value = this.value.replace(/\s+/g, '').toLowerCase();" class="form-control" id="category" value="{{game.category}}" name="category" type="text" placeholder="Oyunun kateqoriyalarını daxil edin" aria-label="category">
 
   </div>
     <div class="col-lg-4 col-12">

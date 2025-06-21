@@ -8,7 +8,7 @@
   </div>
   <div class="col-lg-4 col-6">
             <label for="category" class="fw-bold text-info col-form-label">Kateqoriyalar:</label>
-    <input class="form-control" id="category" name="category" type="text" placeholder="Oyunun kateqoriyalarını daxil edin" aria-label="category">
+            <input class="form-control" id="category" name="category" type="text" placeholder="Oyunun kateqoriyalarını daxil edin" aria-label="category" oninput="this.value = this.value.replace(/\s+/g, '').toLowerCase();">
 
   </div>
     <div class="col-lg-4 col-12">
