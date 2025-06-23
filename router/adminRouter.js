@@ -1,14 +1,16 @@
 const express=require("express")
 const router=express.Router()
 const {checkAdmin} = require('../middlewares.js')
-
+ 
+const cheerio = require('cheerio')
+const request = require('request')
 
 const Page = require("../models/page.js")
 const Game = require("../models/game.js")
-
-
-
+const youtubeapikey = process.env.youtubeApiKey
+const steamGridDbKey = process.env.steamGridDbKey
 const moment = require('moment')
+const axios = require('axios');
 moment.locale('az')
 
 function getYouTubeID(input) {
@@ -57,6 +59,145 @@ const gameplayEmbedId = getYouTubeID(gameplayEmbed)
 router.get('/game/upload',checkAdmin,(req,res)=>{
     res.render('admin/gameUpload')
 })
+
+//upload with ai
+router.get("/game/uploadwithai",checkAdmin,(req,res)=>{
+    res.render('admin/gameUploadWAi')
+})
+
+
+
+
+router.get("/api/steam/:appid", async (req, res) => {
+  try {
+    const appid = req.params.appid;
+    const response = await axios.get(`https://store.steampowered.com/api/appdetails?appids=${appid}`);
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: "Xəta baş verdi" });
+  }
+});
+
+
+router.get('/api/cover/:appid', async (req, res) => {
+  const steamAppId = req.params.appid;
+
+  if (!steamAppId) {
+    return res.status(400).json({ error: 'appid parametri tələb olunur' });
+  }
+
+  try {
+    // 1. Steam App ID ilə SteamGridDB-də oyunu tap
+    const gameRes = await axios.get(`https://www.steamgriddb.com/api/v2/games/steam/${steamAppId}`, {
+      headers: { Authorization: `Bearer ${steamGridDbKey}` }
+    });
+
+    const gameData = gameRes.data.data;
+    const gameId = gameData.id;
+
+    // 2. Grid şəkillərini çək
+    const gridRes = await axios.get(`https://www.steamgriddb.com/api/v2/grids/game/${gameId}`, {
+      headers: { Authorization: `Bearer ${steamGridDbKey}` }
+    });
+
+    const images = gridRes.data.data.map(img => img.url);
+
+    res.json({
+      steam_appid: steamAppId,
+      game_name: gameData.name,
+      steamgriddb_id: gameId,
+      images
+    });
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ error: 'Məlumat çəkilə bilmədi' });
+  }
+});
+
+router.get("/api/youtube", async (req,res) => {
+  const query = req.query.q;
+  if (!query) {
+    return res.status(400).json({ error: 'Query parametresi tələb olunur: ?q=' });
+  }
+  const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=1&q=${encodeURIComponent(query)}&key=${youtubeapikey}`;
+    
+
+  try {
+    const response = await axios.get(url);
+    const items = response.data.items;
+
+    if (items.length === 0) {
+      return res.status(404).json({ error: 'Video tapılmadı.' });
+    }
+
+    const videoId = items[0].id.videoId;
+    const videoUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
+    res.json({ videoUrl });
+  } catch (error) {
+    console.error('Xəta:', error.message);
+    res.status(500).json({ error: 'Server xətası' });
+  }
+
+})
+
+
+
+
+router.get('/api/get-appid', async (req, res) => {
+  const gameName = req.query.name;
+  if (!gameName) {
+    return res.status(400).json({ error: 'name query parameter is required' });
+  }
+
+  try {
+    const response = await axios.get('https://store.steampowered.com/api/storesearch/', {
+      params: {
+        term: gameName,
+        cc: 'us',
+        l: 'en'
+      }
+    });
+
+    const items = response.data.items;
+    if (items.length === 0) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    const game = items[0];
+    res.json({
+      name: game.name,
+      appid: game.id,
+      url: `https://store.steampowered.com/app/${game.id}/`
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong', details: error.message });
+  }
+});
+
+
+
+router.get('/api/get-torrent', async (req, res) => {
+    const gameName = req.query.q;
+    if (!gameName) {
+        return res.status(400).json({ error: 'name query parameter is required' });
+    }
+    try {
+
+      const response = await axios.get('http://localhost:5000', {
+        params: { q: gameName }
+      });
+      res.json(response.data);
+    } catch (error) {
+        res.status(500).json({ error: 'Something went wrong', details: error.message });
+    }
+
+}
+);
+
 router.get('/game/update',(req,res)=>{
     Game.find().sort({ _id: -1 }).lean().limit(10)
     .then(games=>{
