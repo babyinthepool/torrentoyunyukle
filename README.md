@@ -21,4 +21,6 @@ youtubeApiKey=
 4-yt v3 api key
 
 now you can run the app.
+`node index.js`
+
 demo: https://www.torrentoyunyukle.xyz/
