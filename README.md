@@ -4,8 +4,6 @@
 Nice looking, responsive design
 
 ![image](https://github.com/user-attachments/assets/211ce197-5a87-4b2c-9e14-0f32610a40af)
-![image](https://github.com/user-attachments/assets/4a3519f2-7563-4dbf-b58f-05ac3c564c1a)
-![image](https://github.com/user-attachments/assets/ef040dc2-8d04-4d67-a65d-4b4b68bf397e)
 
 And you can add a game just name. just enter the game name in admin area and ai will fill the all areas.
 
