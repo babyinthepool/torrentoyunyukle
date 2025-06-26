@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/6d0f9a8c-c94e-4bb5-96d3-f79282d93520)This is an torrenting site backend project. You can add images, youtube embed videoes, summary about every game. It's not for publishing piracy. Just for educational purpose. All the data used in this is public.
+This is an torrenting site backend project. You can add images, youtube embed videoes, summary about every game. It's not for publishing piracy. Just for educational purpose. All the data used in this is public.
 
 # Features
 Nice looking, responsive design
