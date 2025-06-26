@@ -9,6 +9,8 @@ And you can add a game just name. just enter the game name in admin area and ai 
 
 ![0626](https://github.com/user-attachments/assets/98fedacc-43e4-4c84-85f0-f9a0c293ffa8)
 
+# Setup
+
 .env file you will add
 dbUrl=
 port=
@@ -20,7 +22,9 @@ youtubeApiKey=
 3-steam grid api key
 4-yt v3 api key
 
+
 now you can run the app.
 `node index.js`
 
+# Demo
 demo: https://www.torrentoyunyukle.xyz/
