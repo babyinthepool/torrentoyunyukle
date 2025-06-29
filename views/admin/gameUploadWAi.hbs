@@ -197,6 +197,10 @@ Format: {summary: "...", system: "...", category: "...", gameOutDate: "YYYY-DD-M
 
             const response = await puter.ai.chat(prompt);
             const content = response.message.content;
+            const idPrompt = nameValue + " oyununun steam idsi nedir. sadece idyi yaz baska cevap yazma."
+            const idResponse =await puter.ai.chat(idPrompt  )
+            const idContent  = idResponse.message.content
+            document.getElementById('steamIdAi').textContent = idContent;
 
             // Try to parse as JSON, fallback to regex if needed
             let data;
@@ -237,7 +241,7 @@ Format: {summary: "...", system: "...", category: "...", gameOutDate: "YYYY-DD-M
                 if (!isNaN(num)) document.getElementById('size').value = num;
             }
         } catch (err) {
-            alert('AI cavabı alınmadı: ' + err);
+            alert('AI cavabı alınmadı: ' + err.message);
         }
     });
 
